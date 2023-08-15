@@ -7,9 +7,9 @@ In this work, we introduce a novel approach named Biologically Supervised Graph 
 ```pip install -r requirements.txt```
 
 ## Examples
-* run BSE with uncentered embedding method "vect" for RR0 dataset 
+* run BSE with uncentered embedding method "emb" for RR0 dataset 
 
-  ```python3 BSE.py RR0 vect```
+  ```python3 BSE.py RR0 emb```
 
 * run BSE with ucentered embedding method Isomap for RR1 dataset 
 
