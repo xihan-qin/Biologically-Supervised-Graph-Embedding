@@ -2,9 +2,11 @@
 In this work, we introduce a novel approach named Biologically Supervised Graph Embedding (BSE) to allow for selecting most relevant features to enhance the prediction accuracy of comorbid disease pairs. Our investigation into BSE's impact on both centered and uncentered embedding methods showcases its consistent superiority over the state-of-the-art techniques and its adeptness in selecting dimensions enriched with vital biological insights, thereby improving prediction performance significantly, up to 50% when measured by ROC for some variations. Further analysis indicates that BSE consistently and substantially improves the ratio of disease associations to gene connectivity, affirming its potential in uncovering latent biological factors affecting comorbidity. The statistically significant enhancements across diverse metrics underscore BSE's potential to introduce novel avenues for precise disease comorbidity predictions and other potential applications. 
 
 
-# Examples
+# Run BSE
+## Installation
 ```pip install -r requirements.txt```
 
+## Examples
 * run BSE with uncentered embedding method "vect" for RR0 dataset 
 
   ```python3 BSE.py RR0 vect```
@@ -13,7 +15,9 @@ In this work, we introduce a novel approach named Biologically Supervised Graph 
 
   ```python3 BSE.py RR1 iso```
 
-#  Results
+
+#  Results Showcase
+For additional details, please consult the paper titled "Enhancing Disease Comorbidity Prediction Using Biologically Supervised Graph Embedding on the Human Interactome."
 ### AVERAGE METRIC SCORES FOR RR0
 | Metric	| iso_r	 | iso_s  | p_val	 | std	  | emb_r  | emb_s  | p_val    | std    | vect_r | vect_s |	p_val    |	std   |
 | --------- |:------:|:------:|:--------:|:------:|:------:|:------:|:--------:|:------:|:------:|:------:|:--------:|:------:|
