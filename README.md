@@ -32,6 +32,5 @@ In this work, we introduce a novel approach named Biologically Supervised Graph 
 | Accuracy  | 0.6889 | 0.7109 |	1.21E-04 | 0.0108 |	0.5859 | 0.7173 | 3.37E-10 | 0.0143 | 0.6440 | 0.7187 |	5.29E-08 | 0.0144 |
 | roc_auc   | 0.6616 | 0.6910 |	3.22E-05 | 0.0122 |	0.5048 | 0.6987 | 2.12E-11 | 0.0155 | 0.5997 | 0.7013 |	1.01E-08 | 0.0162 |
 
-
-
-
+### Average metric scores along concatenated dimensions by BSE
+![fig1](https://github.com/xihan-qin/Biologically-Supervised-Graph-Embedding/blob/main/plots/4_metrics_together_both_rrs.png)
