@@ -19,17 +19,17 @@ In this work, we introduce a novel approach named Biologically Supervised Graph 
 #  Results Showcase
 For additional details, please consult the paper titled "Enhancing Disease Comorbidity Prediction Using Biologically Supervised Graph Embedding on the Human Interactome."
 
-### Average Metric Scores for RR0
-| Metric	| iso_r	 | iso_s  | p_val	 | std	  | emb_r  | emb_s  | p_val    | std    | vect_r | vect_s |	p_val    |	std   |
+### Average metric scores for RR0
+| Metric	  | iso_r	 | iso_s  | p_val	   | std	  | emb_r  | emb_s  | p_val    | std    | vect_r | vect_s |	p_val    |	std   |
 | --------- |:------:|:------:|:--------:|:------:|:------:|:------:|:--------:|:------:|:------:|:------:|:--------:|:------:|
 | precision	| 0.8644 | 0.9046 | 3.71E-09 | 0.0057 |	0.8260 | 0.9074 | 8.63E-12 | 0.0059 | 0.8352 | 0.9075 |	7.02E-11 | 0.0066 |
-| recall	| 0.9846 | 0.9717 | 5.92E-05 | 0.0058 |	1.0000 | 0.9742	| 2.25E-08 | 0.0045 | 0.9977 | 0.9743 |	6.49E-07 | 0.0061 |
-| f1	    | 0.9206 | 0.9369 | 1.05E-06 | 0.0045 |	0.9047 | 0.9396	| 2.15E-09 | 0.0047 | 0.9093 | 0.9397 |	1.81E-08 | 0.0052 |
+| recall	  | 0.9846 | 0.9717 | 5.92E-05 | 0.0058 |	1.0000 | 0.9742	| 2.25E-08 | 0.0045 | 0.9977 | 0.9743 |	6.49E-07 | 0.0061 |
+| f1	      | 0.9206 | 0.9369 | 1.05E-06 | 0.0045 |	0.9047 | 0.9396	| 2.15E-09 | 0.0047 | 0.9093 | 0.9397 |	1.81E-08 | 0.0052 |
 | Accuracy	| 0.8596 | 0.8919 | 3.69E-07 | 0.0078 |	0.8260 | 0.8966	| 5.59E-10 | 0.0081 | 0.8355 | 0.8967 |	5.35E-09 | 0.0091 |
-| roc_auc	| 0.6255 | 0.7424 | 4.43E-09 | 0.0170 |	0.5000 | 0.7511	| 5.13E-12 | 0.0172 | 0.5315 | 0.7512 |	5.59E-11 | 0.0196 |
+| roc_auc	  | 0.6255 | 0.7424 | 4.43E-09 | 0.0170 |	0.5000 | 0.7511	| 5.13E-12 | 0.0172 | 0.5315 | 0.7512 |	5.59E-11 | 0.0196 |
 
-### Average Metric Scores for RR1
-| Metric	| iso_r  | 	iso_s |	p_val    |	std	  | emb_r  | emb_s	| p_val    | std    | vect_r | vect_s |	p_val    | std    |
+### Average metric scores for RR1
+| Metric	  | iso_r  | 	iso_s |	p_val    |	std	  | emb_r  | emb_s	| p_val    | std    | vect_r | vect_s |	p_val    | std    |
 | --------- |:------:|:------:|:--------:|:------:|:------:|:------:|:--------:|:------:|:------:|:------:|:--------:|:------:|
 | precision | 0.6975 | 0.7262 | 1.07E-05 | 0.0104 |	0.5859 | 0.7335 | 4.08E-11 | 0.0127 | 0.6456 | 0.7370 |	4.18E-09 | 0.0132 |
 | recall    | 0.8250 | 0.8102 |	1.37E-02 | 0.0154 |	0.9900 | 0.8102 | 1.52E-10 | 0.0179 | 0.8649 | 0.8057 |	8.80E-07 | 0.0158 |
