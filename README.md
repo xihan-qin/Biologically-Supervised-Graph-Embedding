@@ -11,7 +11,7 @@ In this work, we introduce a novel approach named Biologically Supervised Graph 
 
   ```python3 BSE.py RR0 vect```
 
-* run BSE with ucentered embedding method Isomap for RR1 dataset 
+* run BSE with centered embedding method Isomap for RR1 dataset 
 
   ```python3 BSE.py RR1 iso```
 
