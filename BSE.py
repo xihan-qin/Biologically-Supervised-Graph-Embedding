@@ -73,11 +73,11 @@ def main():
     vec_opt = method  # "vect"  -- svd, U, "emb" -- svd, U*Lambda, "iso", -- isomapm, this does not have evals.
 
     # 7. Accuracy before BSE 
-    evecs, evals, embedding = get_vecs(vec_opt, dim_ori, edge_list_file_path, input_folder_2)
+    evecs, evals, embedding = get_vecs(vec_opt, edge_list_file_path, input_folder_2)
     acc = acc_before_BSE(clf, train_set_dict, test_set_dict, node_idx_dict, evecs, embedding, disease_genes_dict)
 
     print(f'vec opt: {vec_opt}')
-    print(f'dim_ori: {dim_ori}')
+    print(f'dim_ori: 100')
     print("Before BSE:")
     print("Accuracy:", acc)
 
@@ -200,25 +200,25 @@ def acc_before_BSE(clf, train_set_dict, test_set_dict, node_idx_dict, evecs, emb
     return acc
 
 #------------------------------------------------------------------------------# 
-def get_vecs(vec_opt, dim_ori, edge_list_file_path, input_folder):
+def get_vecs(vec_opt, edge_list_file_path, input_folder):
     if vec_opt == "iso":
         G_sub = get_graph_from_file(edge_list_file_path)
         A = nx.adjacency_matrix(G_sub)  # sparse matrix, reordered the nodes so that is from small to large
 
-        embedding = Isomap(n_components=dim_ori)
+        embedding = Isomap(n_components=100)
         vecs = embedding.fit_transform(A)
 
         return vecs, None
     
     elif vec_opt == "vect":
-        selected_evals = file_to_array(f"{input_folder}/selected_eigval.tsv")
-        selected_evecs = file_to_matrix(f"{input_folder}/selected_eigvec.tsv")
+        selected_evals = file_to_array(f"{input_folder}/selected_eigval.tsv")       
+        selected_evecs = file_to_matrix(f"{input_folder}/selected_eigvec.tsv")          # this file has dimension 100
         return selected_evecs, selected_evals, None
     
     elif vec_opt == "emb":
         selected_evals = file_to_array(f"{input_folder}/selected_eigval.tsv")
         selected_evecs = file_to_matrix(f"{input_folder}/selected_eigvec.tsv")
-        diag_eigen_vals = np.zeros((dim_ori, dim_ori), float)
+        diag_eigen_vals = np.zeros((100, 100), float)
         np.fill_diagonal(diag_eigen_vals, selected_evals)
         selected_embedding = np.matmul(selected_evecs, diag_eigen_vals)
 
