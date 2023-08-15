@@ -18,7 +18,8 @@ In this work, we introduce a novel approach named Biologically Supervised Graph 
 
 #  Results Showcase
 For additional details, please consult the paper titled "Enhancing Disease Comorbidity Prediction Using Biologically Supervised Graph Embedding on the Human Interactome."
-### AVERAGE METRIC SCORES FOR RR0
+
+### Average Metric Scores for RR0
 | Metric	| iso_r	 | iso_s  | p_val	 | std	  | emb_r  | emb_s  | p_val    | std    | vect_r | vect_s |	p_val    |	std   |
 | --------- |:------:|:------:|:--------:|:------:|:------:|:------:|:--------:|:------:|:------:|:------:|:--------:|:------:|
 | precision	| 0.8644 | 0.9046 | 3.71E-09 | 0.0057 |	0.8260 | 0.9074 | 8.63E-12 | 0.0059 | 0.8352 | 0.9075 |	7.02E-11 | 0.0066 |
@@ -27,7 +28,7 @@ For additional details, please consult the paper titled "Enhancing Disease Comor
 | Accuracy	| 0.8596 | 0.8919 | 3.69E-07 | 0.0078 |	0.8260 | 0.8966	| 5.59E-10 | 0.0081 | 0.8355 | 0.8967 |	5.35E-09 | 0.0091 |
 | roc_auc	| 0.6255 | 0.7424 | 4.43E-09 | 0.0170 |	0.5000 | 0.7511	| 5.13E-12 | 0.0172 | 0.5315 | 0.7512 |	5.59E-11 | 0.0196 |
 
-### AVERAGE METRIC SCORES FOR RR1
+### Average Metric Scores for RR1
 | Metric	| iso_r  | 	iso_s |	p_val    |	std	  | emb_r  | emb_s	| p_val    | std    | vect_r | vect_s |	p_val    | std    |
 | --------- |:------:|:------:|:--------:|:------:|:------:|:------:|:--------:|:------:|:------:|:------:|:--------:|:------:|
 | precision | 0.6975 | 0.7262 | 1.07E-05 | 0.0104 |	0.5859 | 0.7335 | 4.08E-11 | 0.0127 | 0.6456 | 0.7370 |	4.18E-09 | 0.0132 |
