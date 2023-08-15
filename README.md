@@ -13,7 +13,7 @@ In this work, we introduce a novel approach named Biologically Supervised Graph 
 
   ```python3 BSE.py RR1 iso```
 
-#  results
+#  Results
 ### AVERAGE METRIC SCORES FOR RR0
 | Metric	| iso_r	 | iso_s  | p_val	 | std	  | emb_r  | emb_s  | p_val    | std    | vect_r | vect_s |	p_val    |	std   |
 | --------- |:------:|:------:|:--------:|:------:|:------:|:------:|:--------:|:------:|:------:|:------:|:--------:|:------:|
@@ -34,3 +34,12 @@ In this work, we introduce a novel approach named Biologically Supervised Graph 
 
 ### Average metric scores along concatenated dimensions by BSE
 ![fig1](https://github.com/xihan-qin/Biologically-Supervised-Graph-Embedding/blob/main/plots/4_metrics_together_both_rrs.png)
+
+### Top 20 genes with associated disease numbers for first 5 dimensions
+![fig2](https://github.com/xihan-qin/Biologically-Supervised-Graph-Embedding/blob/main/plots/select_dims_top_20_genes_diseases_no_both_rrs.png)
+
+### Top 20 genes and their degrees for the first 5 dimensions
+![fig3](https://github.com/xihan-qin/Biologically-Supervised-Graph-Embedding/blob/main/plots/select_dims_top_20_genes_degrees_no_both_rrs.png)
+
+### Disease count and degrees for top 20 genes and 5 dimensions
+![fig4](https://github.com/xihan-qin/Biologically-Supervised-Graph-Embedding/blob/main/plots/disease_degree_all_methods_both_rr.png)
