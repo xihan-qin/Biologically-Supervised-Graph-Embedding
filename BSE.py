@@ -20,6 +20,7 @@ from utils import (file_to_array, file_to_matrix,
                     save_list_to_file, get_graph_from_file, get_gene_idx_dict_from_file)
 from sklearn.manifold import Isomap
 import time
+from datetime import timedelta
 ################################################################################
 """
     main body of the program
@@ -85,51 +86,38 @@ def main():
     skf5 = StratifiedKFold(n_splits=5, random_state= None, shuffle = False) # 5 folds for cross-valid selection
 
     # 9. set final dimensions for selection
-    select_max_eigen_num = 2
+    select_max_eigen_num = 1
     time_s = time.time()
 
     # 10. run BSE and output metric score
     if embedding is not None:       # for opt "emb"
-        max_eigen_emb, max_eigen_vals, max_idx_list, max_acc_list = BSE(clf, skf5, train_set_dict, test_set_dict, node_idx_dict, select_max_eigen_num, embedding, evals, disease_genes_dict)
+        max_eigen_emb, max_idx_list = BSE(clf, skf5, train_set_dict, test_set_dict, node_idx_dict, select_max_eigen_num, embedding, evals, disease_genes_dict)
         time_e = time.time()
         train_disease_pairs, train_feature_vecs, train_labels = get_feature_vec_concat(train_set_dict, node_idx_dict, max_eigen_emb, disease_genes_dict)
         test_disease_pairs, test_feature_vecs, test_labels = get_feature_vec_concat(test_set_dict, node_idx_dict, max_eigen_emb, disease_genes_dict)
 
     else:
-        max_eigen_vecs, max_eigen_vals, max_idx_list, max_acc_list = BSE(clf, skf5, train_set_dict, test_set_dict, node_idx_dict, select_max_eigen_num, evecs, evals, disease_genes_dict)
+        max_eigen_vecs, max_idx_list = BSE(clf, skf5, train_set_dict, test_set_dict, node_idx_dict, select_max_eigen_num, evecs, evals, disease_genes_dict)
         time_e = time.time()
         train_disease_pairs, train_feature_vecs, train_labels = get_feature_vec_concat(train_set_dict, node_idx_dict, max_eigen_vecs, disease_genes_dict)
         test_disease_pairs, test_feature_vecs, test_labels = get_feature_vec_concat(test_set_dict, node_idx_dict, max_eigen_vecs, disease_genes_dict)
 
     time_tlt = time_e - time_s
-    print("BSE:")
-    print(f"time: {time_tlt}")
+
+    print("After BSE:")
     acc = train_and_test_get_acc(clf, train_feature_vecs, train_labels, test_feature_vecs, test_labels)
     print("Accuracy:", acc)
+    print(f"time: {str(timedelta(seconds=time_tlt))}")
+
     
-
-    # 9. save BSE results to files
-    matrix_to_file(evecs, f'{output_folder}/selected_eigvec.tsv')
-    if evals is not None:
-        array_to_file(evals, f'{output_folder}/selected_eigval.tsv')
-        array_to_file(max_eigen_vals, f'{output_folder}/max_eigval.tsv')
-    if embedding is not None:
-        matrix_to_file(embedding, f'{output_folder}/selected_embs.tsv')
-        matrix_to_file(max_eigen_emb, f'{output_folder}/max_embs.tsv')
-        max_eigen_vecs = evecs[:, max_idx_list]
-
-    matrix_to_file(max_eigen_vecs, f'{output_folder}/max_eigvec.tsv')
+    # 9. save the selected dimensions to files
     save_list_to_file(max_idx_list, f'{output_folder}/max_idxs.tsv')
-    save_list_to_file(max_acc_list, f'{output_folder}/max_acc.tsv' )
-
 
     #------------------------main_steps_end------------------------------------#
 ################################################################################
 #####--------------------------functions_start-----------------------------#####
 def BSE(clf_ori, skf, train_set_dict, test_set_dict, node_idx_dict, select_max_eigen_num, dim_vecs_ori, dim_vals_ori, disease_genes_dict):
     max_idx_list = []   # list importance from largest to smallest
-    max_eigen_vals = []
-    max_acc_list = []
 
     dim_idxs_ori = [i for i in range(dim_vecs_ori.shape[1])]
     dim_idx_random = list(np.random.permutation(dim_idxs_ori))
@@ -139,7 +127,7 @@ def BSE(clf_ori, skf, train_set_dict, test_set_dict, node_idx_dict, select_max_e
         print(f"loop_{j}--started")
         auc_avg_delta_list = []
         auc_avg_new_list = []
-        clf_list = []
+
         for i in range(len(dim_idx_random)):
             ran_idx = dim_idx_random[i]
             vec_ran = dim_vecs_ori[:,ran_idx].reshape(-1,1)
@@ -153,7 +141,7 @@ def BSE(clf_ori, skf, train_set_dict, test_set_dict, node_idx_dict, select_max_e
             auc_avg_delta = auc_avg_new - auc_avg_ori 
             auc_avg_delta_list.append(auc_avg_delta)
             auc_avg_new_list.append(auc_avg_new)
-            clf_list.append(clf)
+
 
         # in case there are more than one dimension that is the max, randomly choose one from them if there are more than one
         idxs_of_max_idx = [idx for idx, auc_avg_delta in enumerate(auc_avg_delta_list) if auc_avg_delta == max(auc_avg_delta_list)]
@@ -163,7 +151,6 @@ def BSE(clf_ori, skf, train_set_dict, test_set_dict, node_idx_dict, select_max_e
         max_dimension_idx = dim_idxs_ori[max_idx]
         if dim_vals_ori is not None:
             max_dimension_val = dim_vals_ori[max_idx]
-            max_eigen_vals.append(max_dimension_val)
         if j == 0:
             max_eigen_vecs = max_dimension_vec
         else:
@@ -173,19 +160,11 @@ def BSE(clf_ori, skf, train_set_dict, test_set_dict, node_idx_dict, select_max_e
         dim_idx_random.pop(idx_of_max_idx)
 
         auc_avg_ori = auc_avg_new_list[idx_of_max_idx]
-        clf_max = clf_list[idx_of_max_idx]
 
-        test_disease_pairs, test_feature_vecs, test_labels = get_feature_vec_concat(test_set_dict, node_idx_dict, max_eigen_vecs, disease_genes_dict)
-        acc = get_acc(clf_max, test_feature_vecs, test_labels)
-        max_acc_list.append(acc)
-
-        print("Test Accuracy:", acc)
         print(f"loop_{j}--finished")
 
-    if len(max_eigen_vals) > 0:
-        max_eigen_vals = np.array(max_eigen_vals)
     
-    return max_eigen_vecs, max_eigen_vals, max_idx_list, max_acc_list    
+    return max_eigen_vecs, max_idx_list    
 
 #------------------------------------------------------------------------------# 
 def acc_before_BSE(clf, train_set_dict, test_set_dict, node_idx_dict, evecs, embedding, disease_genes_dict):
@@ -217,7 +196,7 @@ def get_vecs(vec_opt, edge_list_file_path, input_folder):
     
     elif vec_opt == "emb":
         selected_evals = file_to_array(f"{input_folder}/selected_eigval.tsv")
-        selected_evecs = file_to_matrix(f"{input_folder}/selected_eigvec.tsv")
+        selected_evecs = file_to_matrix(f"{input_folder}/selected_eigvec.tsv")          # this file has dimension 100
         diag_eigen_vals = np.zeros((100, 100), float)
         np.fill_diagonal(diag_eigen_vals, selected_evals)
         selected_embedding = np.matmul(selected_evecs, diag_eigen_vals)
