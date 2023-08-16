@@ -73,23 +73,23 @@ def main():
     # 6. get  vectors
     vec_opt = method  # "vect"  -- svd, U, "emb" -- svd, U*Lambda, "iso", -- isomapm, this does not have evals.
 
-    # 7. Accuracy before BSE 
+    # 7. set final dimensions for selection
+    select_max_eigen_num = 20
+
+    # 8. Accuracy before BSE 
     evecs, evals, embedding = get_vecs(vec_opt, edge_list_file_path, input_folder_2)
-    acc = acc_before_BSE(clf, train_set_dict, test_set_dict, node_idx_dict, evecs, embedding, disease_genes_dict)
+    acc = acc_before_BSE(clf, select_max_eigen_num, train_set_dict, test_set_dict, node_idx_dict, evecs, embedding, disease_genes_dict)
 
     print(f'vec opt: {vec_opt}')
-    print(f'dim_ori: 100')
+    print(f'dim: {select_max_eigen_num}')
     print("Before BSE:")
     print("Accuracy:", acc)
 
     # 8. stratified folds. The folds are made by preserving the percentage of samples for each class. 
     skf5 = StratifiedKFold(n_splits=5, random_state= None, shuffle = False) # 5 folds for cross-valid selection
 
-    # 9. set final dimensions for selection
-    select_max_eigen_num = 1
-    time_s = time.time()
-
     # 10. run BSE and output metric score
+    time_s = time.time()
     if embedding is not None:       # for opt "emb"
         max_eigen_emb, max_idx_list = BSE(clf, skf5, train_set_dict, test_set_dict, node_idx_dict, select_max_eigen_num, embedding, evals, disease_genes_dict)
         time_e = time.time()
@@ -167,11 +167,13 @@ def BSE(clf_ori, skf, train_set_dict, test_set_dict, node_idx_dict, select_max_e
     return max_eigen_vecs, max_idx_list    
 
 #------------------------------------------------------------------------------# 
-def acc_before_BSE(clf, train_set_dict, test_set_dict, node_idx_dict, evecs, embedding, disease_genes_dict):
+def acc_before_BSE(clf, dim, train_set_dict, test_set_dict, node_idx_dict, evecs, embedding, disease_genes_dict):
     if embedding is not None:       # for opt "emb"
+        embedding = embedding[:, :dim]
         train_disease_pairs, train_feature_vecs, train_labels = get_feature_vec_concat(train_set_dict, node_idx_dict, embedding, disease_genes_dict)
         test_disease_pairs, test_feature_vecs, test_labels = get_feature_vec_concat(test_set_dict, node_idx_dict, embedding, disease_genes_dict)        
     else:
+        evecs = evecs[:, :dim]
         train_disease_pairs, train_feature_vecs, train_labels = get_feature_vec_concat(train_set_dict, node_idx_dict, evecs, disease_genes_dict)
         test_disease_pairs, test_feature_vecs, test_labels = get_feature_vec_concat(test_set_dict, node_idx_dict, evecs, disease_genes_dict)
     
@@ -187,7 +189,7 @@ def get_vecs(vec_opt, edge_list_file_path, input_folder):
         embedding = Isomap(n_components=100)
         vecs = embedding.fit_transform(A)
 
-        return vecs, None
+        return vecs, None, None
     
     elif vec_opt == "vect":
         selected_evals = file_to_array(f"{input_folder}/selected_eigval.tsv")       
